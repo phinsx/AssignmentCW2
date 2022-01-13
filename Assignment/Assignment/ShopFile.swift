@@ -25,12 +25,13 @@ class ShopFile: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        testShop.text = merchantShop
         db.collection("Shops").document(merchantShop).getDocument{ (snapshot, error) in
             guard let userdata = snapshot?.data(), error == nil else { return }
             guard let shopName = userdata["shopname"] as? String else{ return };
-//            guard let lastName = userdata["lastname"] as? String else { return }
-            self.showDetail.text = "Shop Name:  " + shopName
+            guard let shopDetail = userdata["description"] as? String else { return }
+            guard let shopaddress = userdata["description"] as? String else { return }
+            guard let shopNum = userdata["description"] as? String else { return }
+            self.showDetail.text = "Shop Name:  " + shopName + "  \n" + "Shop description :  " + shopDetail + "  \n" + "Shop Address :  " + shopaddress + "  \n" + "Contact :  " + shopNum
         }
     }
     
