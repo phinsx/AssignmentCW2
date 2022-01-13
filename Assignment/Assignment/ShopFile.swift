@@ -15,11 +15,23 @@ class ShopFile: UIViewController {
     @IBOutlet weak var shopInfo: UITextField!
     @IBOutlet weak var address: UITextField!
     @IBOutlet weak var phoneNum: UITextField!
+    @IBOutlet weak var showDetail: UILabel!
+    
+    @IBOutlet weak var testShop: UILabel!
+    var merchantEmail = ""
+    var merchantShop = ""
+    let db = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        testShop.text = merchantShop
+        db.collection("Shops").document(merchantShop).getDocument{ (snapshot, error) in
+            guard let userdata = snapshot?.data(), error == nil else { return }
+            guard let shopName = userdata["shopname"] as? String else{ return };
+//            guard let lastName = userdata["lastname"] as? String else { return }
+            self.showDetail.text = "Shop Name:  " + shopName
+        }
     }
     
     @IBAction func addShop(_ sender: Any) {
@@ -33,14 +45,14 @@ class ShopFile: UIViewController {
             alertController.addAction(defaultAction)
             present(alertController, animated: true, completion: nil)
         }
-        let shopName = shopName.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let newshopName = shopName.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let shopDetail = shopInfo.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let shopAddress = address.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let shopPhone = phoneNum.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         let db = Firestore.firestore()
         
-        db.collection("Shops").document(shopName).setData(["shopname": shopName, "description": shopDetail, "address": shopAddress, "phoneNum": shopPhone]) { error in
+        db.collection("Shops").document(newshopName).setData(["shopname": newshopName, "description": shopDetail, "address": shopAddress, "phoneNum": shopPhone]) { error in
             
             if error != nil{
                 let alertController = UIAlertController(title: "Oops!", message: "Error saving data.", preferredStyle: .alert)
@@ -49,14 +61,42 @@ class ShopFile: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
             }
         }
+        db.collection("merchants").document(merchantEmail).updateData([
+            "shopname": shopName.text as Any
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        self.merchantShop = newshopName
     }
     
     @IBAction func upData(_ sender: Any) {
-        
+        db.collection("Shops").document(merchantShop).updateData([
+            "shopname": shopName.text as Any,
+            "description": shopInfo.text as Any,
+            "address": address.text as Any,
+            "phoneNum": phoneNum.text as Any
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
     }
     
     @IBAction func refreshData(_ sender: Any) {
+//        db.collection("Shops").document("").getDocument{ (snapshot, error) in
+//            guard let userdata = snapshot?.data(), error == nil else { return }
+//            guard let firstName = userdata["firstname"] as? String else{ return };
+//            guard let lastName = userdata["lastname"] as? String else { return }
+//            self.userInfo.text = "First Name:  " + firstName + "  \n" + "Last Name:  " + lastName
+//        }
     }
+    
     
     /*
     // MARK: - Navigation
