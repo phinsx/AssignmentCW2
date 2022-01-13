@@ -17,7 +17,6 @@ class ShopFile: UIViewController {
     @IBOutlet weak var phoneNum: UITextField!
     @IBOutlet weak var showDetail: UILabel!
     
-    @IBOutlet weak var testShop: UILabel!
     var merchantEmail = ""
     var merchantShop = ""
     let db = Firestore.firestore()
@@ -29,8 +28,8 @@ class ShopFile: UIViewController {
             guard let userdata = snapshot?.data(), error == nil else { return }
             guard let shopName = userdata["shopname"] as? String else{ return };
             guard let shopDetail = userdata["description"] as? String else { return }
-            guard let shopaddress = userdata["description"] as? String else { return }
-            guard let shopNum = userdata["description"] as? String else { return }
+            guard let shopaddress = userdata["address"] as? String else { return }
+            guard let shopNum = userdata["phoneNum"] as? String else { return }
             self.showDetail.text = "Shop Name:  " + shopName + "  \n" + "Shop description :  " + shopDetail + "  \n" + "Shop Address :  " + shopaddress + "  \n" + "Contact :  " + shopNum
         }
     }
@@ -90,12 +89,14 @@ class ShopFile: UIViewController {
     }
     
     @IBAction func refreshData(_ sender: Any) {
-//        db.collection("Shops").document("").getDocument{ (snapshot, error) in
-//            guard let userdata = snapshot?.data(), error == nil else { return }
-//            guard let firstName = userdata["firstname"] as? String else{ return };
-//            guard let lastName = userdata["lastname"] as? String else { return }
-//            self.userInfo.text = "First Name:  " + firstName + "  \n" + "Last Name:  " + lastName
-//        }
+        db.collection("Shops").document(merchantShop).getDocument{ (snapshot, error) in
+            guard let userdata = snapshot?.data(), error == nil else { return }
+            guard let shopName = userdata["shopname"] as? String else{ return };
+            guard let shopDetail = userdata["description"] as? String else { return }
+            guard let shopaddress = userdata["address"] as? String else { return }
+            guard let shopNum = userdata["phoneNum"] as? String else { return }
+            self.showDetail.text = "Shop Name:  " + shopName + "  \n" + "Shop description :  " + shopDetail + "  \n" + "Shop Address :  " + shopaddress + "  \n" + "Contact :  " + shopNum
+        }
     }
     
     
