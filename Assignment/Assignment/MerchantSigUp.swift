@@ -67,7 +67,7 @@ class MerchantSigUp: UIViewController {
                 }else{
                     let db = Firestore.firestore()
                     
-                    db.collection("merchants").document(email).setData(["firstname": firstName, "lastname": lastName, "uid": result!.user.uid]) { error in
+                    db.collection("merchants").document(email).setData(["firstname": firstName, "lastname": lastName, "shopname": "No Shop Name yet", "uid": result!.user.uid]) { error in
                         
                         if error != nil{
                             let alertController = UIAlertController(title: "Oops!", message: "Error saving data.", preferredStyle: .alert)
