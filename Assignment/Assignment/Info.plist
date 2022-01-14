@@ -4,14 +4,22 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Map Location</string>
 	<key>Privacy – Photo Library Usage Description</key>
 	<string></string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>When Location</string>
 	<key>UISupportedInterfaceOrientations~iphone</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
+		<key>UIApplicationSupportsTabbedSceneCollection</key>
+		<false/>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 		<key>UISceneConfigurations</key>
