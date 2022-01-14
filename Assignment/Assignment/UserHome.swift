@@ -54,6 +54,13 @@ class UserHome: UIViewController {
     @IBAction func infoPage(_ sender: Any) {
         self.performSegue(withIdentifier: "segueInfo", sender: self)
     }
+    @IBAction func toShopChoice(_ sender: Any) {
+        self.performSegue(withIdentifier: "segueToViewShop", sender: self)
+    }
+    
+    @IBAction func toPhotoBtn(_ sender: Any) {
+         self.performSegue(withIdentifier: "phoroHandler", sender: self)
+    }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
