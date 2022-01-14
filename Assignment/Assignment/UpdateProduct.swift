@@ -16,7 +16,6 @@ class UpdateProduct: UIViewController {
     @IBOutlet weak var productDetial: UITextField!
     @IBOutlet weak var productPrice: UITextField!
     @IBOutlet weak var productQty: UITextField!
-    @IBOutlet weak var tseText: UILabel!
     
     var merchantShop = ""
     let db = Firestore.firestore()
@@ -25,7 +24,6 @@ class UpdateProduct: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        tseText.text = merchantShop
     }
     
     @IBAction func addProduct(_ sender: Any) {
