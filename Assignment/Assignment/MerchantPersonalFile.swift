@@ -110,6 +110,17 @@ class MerchantPersonalFile: UIViewController {
         }
     }
     
+    @IBAction func signOut(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserLoginPage")
+                present(vc!, animated: true, completion: nil)
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+    }
     /*
     // MARK: - Navigation
 
