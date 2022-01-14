@@ -17,6 +17,7 @@ class ShopFile: UIViewController {
     @IBOutlet weak var phoneNum: UITextField!
     @IBOutlet weak var showDetail: UILabel!
     
+    @IBOutlet weak var test: UILabel!
     var merchantEmail = ""
     var merchantShop = ""
     let db = Firestore.firestore()
@@ -24,6 +25,7 @@ class ShopFile: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        test.text = merchantShop
         db.collection("Shops").document(merchantShop).getDocument{ (snapshot, error) in
             guard let userdata = snapshot?.data(), error == nil else { return }
             guard let shopName = userdata["shopname"] as? String else{ return };
@@ -62,7 +64,7 @@ class ShopFile: UIViewController {
             }
         }
         db.collection("merchants").document(merchantEmail).updateData([
-            "shopname": shopName.text as Any
+            "shopname": newshopName as Any
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -74,11 +76,22 @@ class ShopFile: UIViewController {
     }
     
     @IBAction func upData(_ sender: Any) {
-        db.collection("Shops").document(merchantShop).updateData([
+        
+        
+        db.collection("Shops").document(merchantShop).setData([
             "shopname": shopName.text as Any,
             "description": shopInfo.text as Any,
             "address": address.text as Any,
             "phoneNum": phoneNum.text as Any
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        db.collection("merchants").document(merchantEmail).updateData([
+            "shopname": shopName.text as Any,
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -100,14 +113,19 @@ class ShopFile: UIViewController {
     }
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        let shopNameToPro = merchantShop
+        if segue.identifier == "returnValToMerchant" {
+            let shopText = segue.destination as! MerchantHome
+            shopText.shopName = shopNameToPro
+        }
     }
-    */
+    
 
 }
